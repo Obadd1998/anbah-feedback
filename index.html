@@ -268,6 +268,16 @@
         padding: 22px 15px 19px;
       }
     }
+    .google-message {
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: nowrap;
+}
+
+.google-word {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
   </style>
 </head>
 
@@ -465,10 +475,11 @@
       class="feedback"
     >
 
-      <p class="message" dir="rtl">
-  يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في <span dir="ltr">Google</span> ⭐
+      <p class="message google-message">
+  <span>يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في</span>
+  <span class="google-word" dir="ltr"> Google </span>
+  <span>⭐</span>
       </p>
-
 
       <!-- النص الذي طلبته بالضبط -->
 

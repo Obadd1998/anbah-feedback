@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>عنبه - تقييم تجربتك</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #188577;
+      color: #ffffff;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      padding: 28px 18px 45px;
+      text-align: center;
+    }
+
+    /* الشعار العلوي */
+    .top-logo {
+      width: min(82%, 390px);
+      max-height: 300px;
+      object-fit: contain;
+      margin: 0 auto 10px;
+      display: block;
+
+      /* الشعار العلوي أبيض */
+      filter: brightness(0) invert(1);
+    }
+
+    h1 {
+      margin: 0;
+      color: #111111;
+      font-size: clamp(30px, 8vw, 46px);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .subtitle {
+      margin: 5px 0 25px;
+      color: #bdbdbd;
+      font-size: clamp(19px, 5vw, 27px);
+      line-height: 1.7;
+    }
+
+    .heart {
+      color: #ffffff;
+      font-size: 25px;
+      vertical-align: middle;
+    }
+
+    /* بطاقة التقييم */
+    .rating-card {
+      background: #ffffff;
+      border-radius: 34px;
+      padding: 42px 20px 35px;
+      color: #222222;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* شعار داخل بطاقة التقييم */
+    .rating-logo {
+      width: min(72%, 310px);
+      height: 230px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    /* الإيموجي بعد اختيار النجوم */
+    .emoji {
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 145px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stars {
+      direction: ltr;
+      display: flex;
+      justify-content: center;
+      gap: clamp(8px, 3vw, 18px);
+      margin: 5px auto 0;
+    }
+
+    .star {
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      color: #d8d8d8;
+      font-size: clamp(48px, 13vw, 70px);
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.15s ease, color 0.15s ease;
+    }
+
+    .star:active {
+      transform: scale(0.88);
+    }
+
+    .star.active {
+      color: #f2c94c;
+    }
+
+    /* الملاحظة */
+    .note-section {
+      display: none;
+      margin-top: 28px;
+      text-align: right;
+    }
+
+    .note-section.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .note-title {
+      display: block;
+      margin: 0 5px 10px;
+      color: #222222;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .optional {
+      color: #777777;
+      font-weight: normal;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 145px;
+      resize: vertical;
+      border: 1px solid #dddddd;
+      border-radius: 22px;
+      padding: 18px;
+      font-family: inherit;
+      font-size: 18px;
+      color: #333333;
+      outline: none;
+      background: #ffffff;
+    }
+
+    textarea:focus {
+      border-color: #188577;
+      box-shadow: 0 0 0 3px rgba(24, 133, 119, 0.10);
+    }
+
+    textarea::placeholder {
+      color: #999999;
+    }
+
+    /* رسالة الشكر */
+    .thank-you {
+      display: none;
+      margin: 30px 0 15px;
+      color: #188577;
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .thank-you.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* زر Google */
+    .google-button {
+      display: none;
+      width: 100%;
+      border: none;
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-top: 12px;
+      background: #188577;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .google-button.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .google-star {
+      color: #ffb000;
+      margin-left: 6px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: rgba(255,255,255,0.72);
+      font-size: 15px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .rating-card {
+        border-radius: 28px;
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .emoji {
+        height: 190px;
+        font-size: 120px;
+      }
+
+      .rating-logo {
+        height: 190px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <!-- الشعار العلوي -->
+    <img
+      src="assets/logo.png"
+      alt="عنبه"
+      class="top-logo"
+    >
+
+    <h1>كيف كانت تجربتك؟</h1>
+
+    <div class="subtitle">
+      <span class="heart">♥</span>
+      رأيك يهمنا ويصنع الفرق
+    </div>
+
+    <section class="rating-card">
+
+      <!-- يظهر قبل اختيار التقييم -->
+      <img
+        id="ratingLogo"
+        src="assets/logo.png"
+        alt="عنبه"
+        class="rating-logo"
+      >
+
+      <!-- يظهر بعد اختيار التقييم -->
+      <div id="emoji" class="emoji" style="display:none;"></div>
+
+      <!-- النجوم -->
+      <div class="stars">
+
+        <button class="star" data-rating="1" aria-label="نجمة واحدة">
+          ★
+        </button>
+
+        <button class="star" data-rating="2" aria-label="نجمتان">
+          ★
+        </button>
+
+        <button class="star" data-rating="3" aria-label="ثلاث نجوم">
+          ★
+        </button>
+
+        <button class="star" data-rating="4" aria-label="أربع نجوم">
+          ★
+        </button>
+
+        <button class="star" data-rating="5" aria-label="خمس نجوم">
+          ★
+        </button>
+
+      </div>
+
+      <!-- الملاحظة -->
+      <div id="noteSection" class="note-section">
+
+        <label class="note-title" for="note">
+          ملاحظتك
+          <span class="optional">(اختياري)</span>
+        </label>
+
+        <textarea
+          id="note"
+          placeholder="اكتب لنا ملاحظتك أو اقتراحك..."
+        ></textarea>
+
+      </div>
+
+      <!-- رسالة الشكر -->
+      <div id="thankYou" class="thank-you">
+        سعدنا جدًا بتجربتك!
+      </div>
+
+      <!-- زر Google -->
+      <button id="googleButton" class="google-button">
+        <span class="google-star">★</span>
+        قيّمنا على Google
+      </button>
+
+    </section>
+
+    <div class="footer">
+      نسخة تجريبية — سيتم إضافة روابط الفروع لاحقًا
+    </div>
+
+  </main>
+
+  <script>
+
+    const stars = document.querySelectorAll(".star");
+    const ratingLogo = document.getElementById("ratingLogo");
+    const emoji = document.getElementById("emoji");
+    const noteSection = document.getElementById("noteSection");
+    const thankYou = document.getElementById("thankYou");
+    const googleButton = document.getElementById("googleButton");
+
+    let selectedRating = 0;
+
+    /*
+      كل تقييم له تعبير مختلف
+    */
+    const emojis = {
+      1: "😡",
+      2: "😕",
+      3: "🙂",
+      4: "😊",
+      5: "🤩"
+    };
+
+    stars.forEach((star) => {
+
+      star.addEventListener("click", () => {
+
+        selectedRating = Number(star.dataset.rating);
+
+        /* تلوين النجوم */
+        stars.forEach((item) => {
+
+          const rating = Number(item.dataset.rating);
+
+          if (rating <= selectedRating) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+
+        });
+
+        /* إخفاء الشعار وإظهار الإيموجي */
+        ratingLogo.style.display = "none";
+
+        emoji.textContent = emojis[selectedRating];
+        emoji.style.display = "flex";
+
+        /* إظهار الملاحظة */
+        noteSection.classList.add("show");
+
+        /* إظهار رسالة الشكر */
+        thankYou.classList.add("show");
+
+        /* إظهار زر Google */
+        googleButton.classList.add("show");
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>

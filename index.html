@@ -4,328 +4,268 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>تقييم تجربتك</title>
+  <title>تقييم تجربة عنبه</title>
 
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      font-family: Arial, "Tahoma", sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      font-family: Tahoma, Arial, sans-serif;
       background: #178579;
-      min-height: 100vh;
-      color: #111;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px 35px;
     }
 
-    .page {
-      width: 100%;
-      min-height: 100vh;
-      padding: 25px 18px 40px;
-      text-align: center;
-    }
-
-    /* =========================
-       الشعار العلوي
-    ========================= */
-
+    /* شعار وهوية عنبه */
     .top-logo {
-      width: 250px;
-      max-width: 75%;
+      width: 150px;
       height: auto;
-      margin: 5px auto 15px;
+      margin: 5px auto 18px;
       display: block;
-
-      /* تحويل الشعار إلى أبيض */
+      object-fit: contain;
       filter: brightness(0) invert(1);
-
-      image-rendering: auto;
     }
 
-    /* =========================
-       العناوين
-    ========================= */
+    /* الكرت الأبيض */
+    .card {
+      width: min(100%, 460px);
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px 18px 21px;
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.13);
+    }
 
-    .title {
-      font-size: 32px;
-      font-weight: 800;
-      color: #000;
-      margin-top: 5px;
-      margin-bottom: 12px;
-      line-height: 1.4;
+    /* منطقة الشعار داخل التقييم */
+    .brand-area {
+      min-height: 95px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-logo {
+      width: 125px;
+      max-height: 90px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* الإيموجي يظهر بعد اختيار النجوم */
+    .emoji {
+      display: none;
+      font-size: 62px;
+      line-height: 1;
+      animation: pop 0.55s ease;
+    }
+
+    .emoji.show {
+      display: block;
+    }
+
+    @keyframes pop {
+      0% {
+        opacity: 0;
+        transform: scale(0.35) rotate(-12deg);
+      }
+
+      65% {
+        transform: scale(1.12) rotate(4deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    h1 {
+      margin: 5px 0 7px;
+      font-size: 25px;
+      color: #176f65;
     }
 
     .subtitle {
-      font-size: 21px;
-      color: #d2d2d2;
-      margin-bottom: 28px;
-      line-height: 1.6;
+      margin: 0 0 17px;
+      color: #777;
+      font-size: 15px;
     }
 
-    .heart {
-      color: #fff;
-      font-size: 23px;
-      margin-right: 5px;
-    }
-
-    /* =========================
-       بطاقة التقييم
-    ========================= */
-
-    .rating-card {
-      width: 100%;
-      max-width: 660px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 34px;
-      padding: 38px 24px 35px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-
-    /* الشعار داخل بطاقة التقييم */
-
-    .card-logo {
-      width: 300px;
-      max-width: 80%;
-      height: auto;
-      display: block;
-      margin: 0 auto 25px;
-    }
-
-    /* =========================
-       النجوم
-    ========================= */
-
+    /* النجوم */
     .stars {
-      direction: ltr;
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin: 10px auto 28px;
+      direction: ltr;
+      gap: 4px;
     }
 
     .star {
-      border: none;
+      border: 0;
       background: transparent;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-
-      font-size: 62px;
+      padding: 2px;
+      font-size: 42px;
       line-height: 1;
-
-      color: #d6d6d6;
-
-      transition:
-        transform 0.15s ease,
-        color 0.15s ease;
+      color: #d5d5d5;
+      cursor: pointer;
+      transition: 0.18s ease;
     }
 
     .star:hover {
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     .star.active {
-      color: #f1c644;
+      color: #ffc928;
     }
 
-    /* =========================
-       الإيموجي
-    ========================= */
-
-    .emoji {
-      font-size: 95px;
-      line-height: 1;
-      margin: 5px auto 20px;
-
-      min-height: 100px;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      transition: transform 0.2s ease;
+    /* الأقسام مخفية في البداية */
+    .feedback {
+      display: none;
+      margin-top: 18px;
+      animation: reveal 0.35s ease;
     }
 
-    .emoji.animate {
-      transform: scale(1.12);
-    }
-
-    /* =========================
-       الملاحظات
-    ========================= */
-
-    .notes-section {
-      text-align: right;
-      margin-top: 5px;
-    }
-
-    .notes-label {
+    .feedback.show {
       display: block;
-      font-size: 22px;
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 10px;
     }
 
-    .optional {
-      font-weight: 400;
-      color: #777;
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message {
+      margin: 0 0 14px;
+      color: #176f65;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.65;
+    }
+
+    /* أزرار نوع المشكلة */
+    .categories {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .category {
+      border: 1px solid #d9e8e5;
+      background: #f7fbfa;
+      color: #176f65;
+      border-radius: 12px;
+      padding: 11px 7px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .category:hover,
+    .category.selected {
+      background: #e4f3f0;
+      border-color: #178579;
+    }
+
+    .category:last-child {
+      grid-column: 1 / -1;
+    }
+
+    /* الملاحظات والتواصل */
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 13px;
+      padding: 13px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      margin-top: 9px;
+      background: #fff;
+      color: #333;
     }
 
     textarea {
-      width: 100%;
-      min-height: 145px;
+      min-height: 105px;
       resize: vertical;
-
-      border: 1px solid #dedede;
-      border-radius: 22px;
-
-      padding: 18px;
-      font-family: inherit;
-      font-size: 18px;
-      color: #222;
-
-      outline: none;
-      background: #fff;
-
-      transition: border-color 0.2s ease,
-                  box-shadow 0.2s ease;
     }
 
-    textarea::placeholder {
-      color: #888;
-    }
-
-    textarea:focus {
+    textarea:focus,
+    input:focus {
       border-color: #178579;
-      box-shadow: 0 0 0 3px rgba(23, 133, 121, 0.12);
+      box-shadow: 0 0 0 3px rgba(23, 133, 121, 0.09);
     }
 
-    /* =========================
-       زر Google
-    ========================= */
-
-    .google-section {
-      margin-top: 25px;
-    }
-
-    .google-button {
+    /* الأزرار */
+    .submit-btn,
+    .google-btn {
       width: 100%;
-      border: none;
-      border-radius: 18px;
-
-      background: #178579;
-      color: #fff;
-
-      padding: 18px 20px;
-
+      border: 0;
+      border-radius: 13px;
+      padding: 14px;
+      margin-top: 12px;
       font-family: inherit;
-      font-size: 21px;
-      font-weight: 700;
-
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
-
-      display: block;
-
-      transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
     }
 
-    .google-button:hover {
+    .submit-btn {
+      background: #178579;
+      color: white;
+    }
+
+    .google-btn {
+      background: #f4b400;
+      color: white;
+    }
+
+    .submit-btn:hover,
+    .google-btn:hover {
       opacity: 0.92;
       transform: translateY(-1px);
     }
 
-    .google-button:active {
-      transform: scale(0.98);
-    }
-
-    .google-star {
-      font-size: 25px;
-      vertical-align: middle;
-      margin-left: 7px;
-    }
-
-    /* =========================
-       رسالة بعد الاختيار
-    ========================= */
-
-    .thank-you {
+    .status {
       display: none;
-      margin-top: 18px;
+      margin-top: 10px;
       color: #178579;
-      font-size: 19px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    /* =========================
-       الجوال
-    ========================= */
+    .status.show {
+      display: block;
+    }
 
-    @media (max-width: 600px) {
+    .small-note {
+      color: #999;
+      font-size: 12px;
+      margin-top: 8px;
+    }
 
-      .page {
-        padding: 18px 14px 35px;
-      }
-
-      .top-logo {
-        width: 235px;
-        max-width: 82%;
-        margin-bottom: 12px;
-      }
-
-      .title {
-        font-size: 29px;
-      }
-
-      .subtitle {
-        font-size: 19px;
-        margin-bottom: 22px;
-      }
-
-      .rating-card {
-        border-radius: 30px;
-        padding: 30px 18px 28px;
-      }
-
-      .card-logo {
-        width: 270px;
-        max-width: 88%;
-        margin-bottom: 18px;
-      }
-
-      .stars {
-        gap: 5px;
-        margin-bottom: 25px;
-      }
-
+    @media (max-width: 380px) {
       .star {
-        font-size: 48px;
+        font-size: 37px;
       }
 
-      .emoji {
-        font-size: 82px;
-        min-height: 90px;
-        margin-bottom: 18px;
-      }
-
-      .notes-label {
-        font-size: 20px;
-      }
-
-      textarea {
-        min-height: 130px;
-        font-size: 17px;
-      }
-
-      .google-button {
-        font-size: 19px;
+      .card {
+        padding: 22px 15px 19px;
       }
     }
   </style>
@@ -333,257 +273,630 @@
 
 <body>
 
-  <main class="page">
+  <!-- ============================= -->
+  <!-- شعار وهوية عنبه -->
+  <!-- ============================= -->
 
-    <!-- =========================
-         الشعار العلوي
-    ========================== -->
+  <img
+    class="top-logo"
+    src="logo.png"
+    alt="عنبه"
+  >
 
-    <img
-      src="logo.png"
-      alt="عنبه"
-      class="top-logo"
-    >
+  <!-- ============================= -->
+  <!-- الكرت الرئيسي -->
+  <!-- ============================= -->
 
-    <!-- =========================
-         العنوان
-    ========================== -->
+  <main class="card">
 
-    <h1 class="title">
-      كيف كانت تجربتك؟
-    </h1>
+    <!--
+      في البداية يظهر شعار عنبه.
+      بعد اختيار النجوم يتحول هذا المكان إلى الإيموجي.
+    -->
 
-    <p class="subtitle">
-      رأيك يهمنا ويصنع الفرق
-      <span class="heart">🤍</span>
-    </p>
+    <div class="brand-area">
 
-    <!-- =========================
-         بطاقة التقييم
-    ========================== -->
-
-    <section class="rating-card">
-
-      <!-- الشعار داخل البطاقة -->
       <img
+        id="cardLogo"
+        class="card-logo"
         src="logo.png"
         alt="عنبه"
-        class="card-logo"
       >
 
-      <!-- الإيموجي -->
       <div
         id="emoji"
         class="emoji"
-        aria-live="polite"
+        aria-hidden="true"
+      ></div>
+
+    </div>
+
+
+    <h1>كيف كانت تجربتك؟</h1>
+
+    <p class="subtitle">
+      رأيك يهمنا ويصنع الفرق
+    </p>
+
+
+    <!-- ============================= -->
+    <!-- النجوم -->
+    <!-- ============================= -->
+
+    <div class="stars">
+
+      <button
+        class="star"
+        data-rating="1"
+        aria-label="نجمة واحدة"
       >
-        🙂
-      </div>
+        ★
+      </button>
 
-      <!-- النجوم -->
-      <div
-        class="stars"
-        id="stars"
-        aria-label="اختر تقييمك"
+      <button
+        class="star"
+        data-rating="2"
+        aria-label="نجمتان"
       >
+        ★
+      </button>
 
-        <button class="star" data-rating="1" aria-label="نجمة واحدة">
-          ★
-        </button>
+      <button
+        class="star"
+        data-rating="3"
+        aria-label="ثلاث نجوم"
+      >
+        ★
+      </button>
 
-        <button class="star" data-rating="2" aria-label="نجمتان">
-          ★
-        </button>
+      <button
+        class="star"
+        data-rating="4"
+        aria-label="أربع نجوم"
+      >
+        ★
+      </button>
 
-        <button class="star" data-rating="3" aria-label="ثلاث نجوم">
-          ★
-        </button>
+      <button
+        class="star"
+        data-rating="5"
+        aria-label="خمس نجوم"
+      >
+        ★
+      </button>
 
-        <button class="star" data-rating="4" aria-label="أربع نجوم">
-          ★
-        </button>
+    </div>
 
-        <button class="star" data-rating="5" aria-label="خمس نجوم">
-          ★
-        </button>
 
-      </div>
+    <!-- ====================================== -->
+    <!-- تقييم من 1 إلى 3 نجوم -->
+    <!-- ====================================== -->
 
-      <!-- =========================
-           الملاحظات
-      ========================== -->
+    <section
+      id="negativeFeedback"
+      class="feedback"
+    >
 
-      <div class="notes-section">
+      <p class="message">
+        نعتذر منك 🙏 ساعدنا لحل المشكلة
+      </p>
 
-        <label
-          for="notes"
-          class="notes-label"
+
+      <div class="categories">
+
+        <button
+          class="category"
+          data-category="الأكل"
         >
-          ملاحظتك
-          <span class="optional">(اختياري)</span>
-        </label>
+          🍽️ الأكل
+        </button>
 
-        <textarea
-          id="notes"
-          placeholder="اكتب لنا ملاحظتك أو اقتراحك..."
-        ></textarea>
-
-      </div>
-
-      <!-- =========================
-           زر Google
-      ========================== -->
-
-      <div class="google-section">
-
-        <!--
-          مهم:
-          ضع رابط Google الخاص بالمطعم/الفرع
-          مكان الرابط الموجود هنا.
-        -->
-
-        <a
-          id="googleButton"
-          class="google-button"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          class="category"
+          data-category="الخدمة"
         >
-          <span class="google-star">⭐</span>
-          قيّمنا على Google
-        </a>
+          🙋‍♂️ الخدمة
+        </button>
+
+        <button
+          class="category"
+          data-category="السرعة"
+        >
+          ⏱️ السرعة
+        </button>
+
+        <button
+          class="category"
+          data-category="النظافة"
+        >
+          ✨ النظافة
+        </button>
+
+        <button
+          class="category"
+          data-category="أخرى"
+        >
+          💬 أخرى
+        </button>
 
       </div>
+
+
+      <textarea
+        id="note"
+        placeholder="اكتب ملاحظتك (اختياري)"
+      ></textarea>
+
+
+      <input
+        id="contact"
+        type="text"
+        placeholder="جوالك أو إيميلك لو تبغى نتواصل معك (اختياري)"
+      >
+
+
+      <button
+        id="submitBtn"
+        class="submit-btn"
+      >
+        إرسال ملاحظتك
+      </button>
+
 
       <div
-        id="thankYou"
-        class="thank-you"
-      >
-        شكرًا لك، رأيك يهمنا 🤍
+        id="negativeStatus"
+        class="status"
+      ></div>
+
+
+      <div class="small-note">
+        ملاحظتك تساعدنا نحسن تجربتك 🤍
       </div>
+
+    </section>
+
+
+    <!-- ====================================== -->
+    <!-- تقييم 4 إلى 5 نجوم -->
+    <!-- ====================================== -->
+
+    <section
+      id="positiveFeedback"
+      class="feedback"
+    >
+
+      <p class="message">
+        يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في قوقل ⭐
+      </p>
+
+
+      <!-- النص الذي طلبته بالضبط -->
+
+      <button
+        id="googleBtn"
+        class="google-btn"
+      >
+        ⭐قيمنا على Google
+      </button>
+
+
+      <div
+        id="positiveStatus"
+        class="status"
+      ></div>
 
     </section>
 
   </main>
 
 
+  <!-- ============================= -->
+  <!-- JavaScript -->
+  <!-- ============================= -->
+
   <script>
 
-    /* =====================================
-       عناصر الصفحة
-    ===================================== */
+    /*
+    ==========================================================
+    لا تعدل هذه الروابط الآن.
+    سنربط Google Sheets ورابط Google لاحقًا.
+    ==========================================================
+    */
 
-    const stars = document.querySelectorAll(".star");
-    const emoji = document.getElementById("emoji");
-    const thankYou = document.getElementById("thankYou");
+    const GOOGLE_SHEETS_ENDPOINT =
+      "ضع_رابط_Google_Apps_Script_هنا";
 
-
-    /* =====================================
-       الإيموجيات حسب التقييم
-    ===================================== */
-
-    const emojis = {
-      1: "😞",
-      2: "😕",
-      3: "🙂",
-      4: "😍",
-      5: "🤩"
-    };
+    const GOOGLE_REVIEW_URL =
+      "ضع_رابط_تقييم_قوقل_هنا";
 
 
-    /* =====================================
-       النصوص حسب التقييم
-    ===================================== */
-
-    const messages = {
-      1: "نأسف إن تجربتك ما كانت بالمستوى المطلوب",
-      2: "نتمنى نقدر نقدم لك تجربة أفضل",
-      3: "شكرًا لتقييمك، ونسعى دائمًا للأفضل",
-      4: "سعداء جدًا إن تجربتك أعجبتك",
-      5: "سعداء جدًا بتجربتك! شكرًا لك 🤍"
-    };
+    let selectedRating = 0;
+    let selectedCategory = "";
 
 
-    /* =====================================
-       عند الضغط على النجوم
-    ===================================== */
+    const stars =
+      document.querySelectorAll(".star");
 
-    stars.forEach((star) => {
+    const cardLogo =
+      document.getElementById("cardLogo");
 
-      star.addEventListener("click", () => {
+    const emoji =
+      document.getElementById("emoji");
 
-        const rating = Number(
-          star.getAttribute("data-rating")
+    const negativeFeedback =
+      document.getElementById("negativeFeedback");
+
+    const positiveFeedback =
+      document.getElementById("positiveFeedback");
+
+    const categories =
+      document.querySelectorAll(".category");
+
+    const submitBtn =
+      document.getElementById("submitBtn");
+
+    const googleBtn =
+      document.getElementById("googleBtn");
+
+    const negativeStatus =
+      document.getElementById("negativeStatus");
+
+    const positiveStatus =
+      document.getElementById("positiveStatus");
+
+
+    /* ==========================================
+       تلوين النجوم
+    ========================================== */
+
+    function updateStars(rating) {
+
+      stars.forEach(function(star) {
+
+        const starRating =
+          Number(star.dataset.rating);
+
+        star.classList.toggle(
+          "active",
+          starRating <= rating
         );
 
+      });
 
-        /* تلوين النجوم */
-
-        stars.forEach((item) => {
-
-          const itemRating = Number(
-            item.getAttribute("data-rating")
-          );
-
-          if (itemRating <= rating) {
-            item.classList.add("active");
-          } else {
-            item.classList.remove("active");
-          }
-
-        });
+    }
 
 
-        /* تغيير الإيموجي */
+    /* ==========================================
+       تغيير الشعار إلى الإيموجي
+    ========================================== */
 
-        emoji.textContent = emojis[rating];
+    function showEmoji(type) {
+
+      /*
+        نخفي شعار التقييم داخل الكرت فقط.
+        الشعار العلوي يبقى موجودًا.
+      */
+
+      cardLogo.style.display = "none";
+
+      emoji.classList.remove("show");
+
+      /*
+        إعادة تشغيل الحركة
+      */
+
+      void emoji.offsetWidth;
 
 
-        /* حركة بسيطة */
+      if (type === "negative") {
 
-        emoji.classList.remove("animate");
+        emoji.textContent = "😔🙏";
 
-        void emoji.offsetWidth;
+      } else {
 
-        emoji.classList.add("animate");
+        emoji.textContent = "🥳";
 
-
-        /* إظهار رسالة الشكر */
-
-        thankYou.style.display = "block";
+      }
 
 
-        /* تغيير نص الرسالة */
+      emoji.classList.add("show");
 
-        thankYou.textContent =
-          messages[rating];
+    }
+
+
+    /* ==========================================
+       إظهار الواجهة المناسبة
+    ========================================== */
+
+    function showRatingState(rating) {
+
+      negativeFeedback.classList.remove("show");
+
+      positiveFeedback.classList.remove("show");
+
+
+      negativeStatus.classList.remove("show");
+
+      positiveStatus.classList.remove("show");
+
+
+      /*
+        1 - 3 نجوم
+      */
+
+      if (rating <= 3) {
+
+        showEmoji("negative");
+
+        negativeFeedback.classList.add("show");
+
+      }
+
+
+      /*
+        4 - 5 نجوم
+      */
+
+      else {
+
+        showEmoji("positive");
+
+        positiveFeedback.classList.add("show");
+
+      }
+
+    }
+
+
+    /* ==========================================
+       عند الضغط على نجمة
+    ========================================== */
+
+    stars.forEach(function(star) {
+
+      star.addEventListener("click", function() {
+
+        selectedRating =
+          Number(star.dataset.rating);
+
+
+        updateStars(selectedRating);
+
+
+        showRatingState(selectedRating);
 
       });
 
     });
 
 
-    /* =====================================
-       منع إرسال النموذج قبل اختيار التقييم
-       ===================================== */
+    /* ==========================================
+       اختيار نوع المشكلة
+    ========================================== */
 
-    const googleButton =
-      document.getElementById("googleButton");
+    categories.forEach(function(button) {
 
-    googleButton.addEventListener("click", (event) => {
+      button.addEventListener("click", function() {
 
-      const selectedStar =
-        document.querySelector(".star.active");
+        categories.forEach(function(item) {
 
-      if (!selectedStar) {
+          item.classList.remove("selected");
 
-        event.preventDefault();
+        });
 
-        alert("فضلاً اختر تقييمك أولاً ⭐");
+
+        button.classList.add("selected");
+
+
+        selectedCategory =
+          button.dataset.category;
+
+      });
+
+    });
+
+
+    /* ==========================================
+       إرسال البيانات إلى Google Sheets
+    ========================================== */
+
+    async function sendToGoogleSheets(extra = {}) {
+
+      /*
+        إذا لم يتم الربط بعد، لا نفعل شيئًا.
+      */
+
+      if (
+        !GOOGLE_SHEETS_ENDPOINT ||
+        GOOGLE_SHEETS_ENDPOINT.includes("ضع_رابط")
+      ) {
+
+        return false;
 
       }
 
-    });
+
+      const data = {
+
+        timestamp:
+          new Date().toISOString(),
+
+        rating:
+          selectedRating,
+
+        category:
+          selectedCategory,
+
+        note:
+          document
+            .getElementById("note")
+            .value
+            .trim(),
+
+        contact:
+          document
+            .getElementById("contact")
+            .value
+            .trim(),
+
+        ...extra
+
+      };
+
+
+      try {
+
+        await fetch(
+          GOOGLE_SHEETS_ENDPOINT,
+          {
+
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:
+              JSON.stringify(data)
+
+          }
+        );
+
+
+        return true;
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        return false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       زر إرسال الملاحظة
+    ========================================== */
+
+    submitBtn.addEventListener(
+      "click",
+      async function() {
+
+        if (!selectedCategory) {
+
+          negativeStatus.textContent =
+            "اختر نوع المشكلة أولاً 🙏";
+
+          negativeStatus.classList.add("show");
+
+          return;
+
+        }
+
+
+        submitBtn.disabled = true;
+
+        submitBtn.textContent =
+          "جاري الإرسال...";
+
+
+        const sent =
+          await sendToGoogleSheets();
+
+
+        if (sent) {
+
+          negativeStatus.textContent =
+            "تم استلام ملاحظتك، شكرًا لك 🤍";
+
+        }
+
+        else {
+
+          negativeStatus.textContent =
+            "تم تسجيل ملاحظتك. سيتم تفعيل الحفظ في Google Sheets بعد الربط.";
+
+        }
+
+
+        negativeStatus.classList.add("show");
+
+
+        submitBtn.textContent =
+          "تم الإرسال ✓";
+
+      }
+    );
+
+
+    /* ==========================================
+       زر Google
+    ========================================== */
+
+    googleBtn.addEventListener(
+      "click",
+      async function() {
+
+        googleBtn.disabled = true;
+
+
+        googleBtn.textContent =
+          "جاري فتح Google...";
+
+
+        /*
+          نحفظ تقييم 4 أو 5 إذا تم ربط Sheets
+        */
+
+        await sendToGoogleSheets({
+          action: "google_review"
+        });
+
+
+        /*
+          إذا وضعنا رابط Google لاحقًا
+        */
+
+        if (
+          GOOGLE_REVIEW_URL &&
+          !GOOGLE_REVIEW_URL.includes("ضع_رابط")
+        ) {
+
+          window.location.href =
+            GOOGLE_REVIEW_URL;
+
+        }
+
+
+        /*
+          إذا لم نضع الرابط بعد
+        */
+
+        else {
+
+          positiveStatus.textContent =
+            "أضف رابط تقييم Google لاحقًا.";
+
+          positiveStatus.classList.add("show");
+
+
+          googleBtn.disabled = false;
+
+
+          googleBtn.textContent =
+            "⭐قيمنا على Google";
+
+        }
+
+      }
+    );
 
   </script>
 

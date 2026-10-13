@@ -521,6 +521,9 @@
      "https://maps.app.goo.gl/2He3yH2z33Z7m9sM6?g_st=ac";
 
 
+const BRANCH_ID = new URLSearchParams(window.location.search).get("branch") || "almughrizat";
+const BRANCH_NAME = BRANCH_ID === "almughrizat" ? "المغرزات" : BRANCH_ID;    
+    
     let selectedRating = 0;
     let selectedCategory = "";
 
@@ -728,6 +731,7 @@
 
 
       const data = {
+        branch: BRANCH_NAME,
 
         timestamp:
           new Date().toISOString(),

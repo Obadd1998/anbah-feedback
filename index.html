@@ -521,7 +521,32 @@
 
 
 const BRANCH_ID = new URLSearchParams(window.location.search).get("branch") || "almughrizat";
-const BRANCH_NAME = BRANCH_ID === "almughrizat" ? "المغرزات" : BRANCH_ID;    
+
+const BRANCH_NAMES = {
+  almughrizat: "المغرزات",
+  althumamah: "الثمامة",
+  alkhuzama: "الخزامى",
+  alsafa: "الصفا",
+  alrayan: "الريان",
+  alsuwaidi: "السويدي",
+  alshifa: "الشفاء",
+  alnaseem: "النسيم",
+  alarid: "العارض",
+  alfayha: "الفيحاء - المجمعة",
+  alquds: "القدس",
+  alqirawan: "القيروان",
+  almalqa: "الملقا",
+  alnarjis: "النرجس",
+  alnazim: "النظيم",
+  alnahdah: "النهضة",
+  ghirnatah: "غرناطة",
+  aisha: "عائشة",
+  irqa: "عرقة",
+  qurtubah: "قرطبة",
+  laban: "لبن"
+};
+
+const BRANCH_NAME = BRANCH_NAMES[BRANCH_ID] || "غير محدد";
     
     let selectedRating = 0;
     let selectedCategory = "";

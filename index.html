@@ -516,9 +516,10 @@
 
     const GOOGLE_SHEETS_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbxm1m2QRjR9l8RRTkk8wdSAm43c0FhcAxx_TipGDMM_Wp_1-2K9q90ZtWMwEJkrPpVX/exec";
-    const GOOGLE_REVIEW_URL =
-     "https://maps.app.goo.gl/2He3yH2z33Z7m9sM6?g_st=ac";
-
+    const GOOGLE_REVIEW_URLS = {
+  almughrizat: "https://maps.app.goo.gl/5z4T9W9VDjqMA1EPA?g_st=ac",
+  althumamah: "https://maps.app.goo.gl/uSNfXh5opFWWRstp8?g_st=ac"
+};
 
 const BRANCH_ID = new URLSearchParams(window.location.search).get("branch") || "almughrizat";
 
@@ -903,15 +904,13 @@ const BRANCH_NAME = BRANCH_NAMES[BRANCH_ID] || "غير محدد";
           إذا وضعنا رابط Google لاحقًا
         */
 
-        if (
-          GOOGLE_REVIEW_URL &&
-          !GOOGLE_REVIEW_URL.includes("ضع_رابط")
-        ) {
+        const reviewUrl = GOOGLE_REVIEW_URLS[BRANCH_ID];
 
-          window.location.href =
-            GOOGLE_REVIEW_URL;
-
-        }
+if (reviewUrl) {
+  window.location.href = reviewUrl;
+} else {
+  positiveStatus.textContent = "رابط التقييم غير متوفر لهذا الفرع.";
+}
 
 
         /*

@@ -5,55 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تقييم تجربة عنبه</title>
 <style>
+:root{--deep:#087765;--green:#087765;--green2:#0e927e;--mint:#d5eee7;--gold:#ffbf19;--ink:#145f53;--muted:#737d79;--white:#fff}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:#178579;color:#333;display:flex;flex-direction:column;align-items:center;padding:20px 14px 35px}
-.top-logo{width:150px;height:auto;margin:5px auto 18px;display:block;object-fit:contain;filter:brightness(0) invert(1)}
-.card{width:min(100%,460px);background:#fff;border-radius:24px;padding:24px 18px 21px;text-align:center;box-shadow:0 12px 35px rgba(0,0,0,.13)}
-.brand-area{min-height:95px;display:flex;align-items:center;justify-content:center}
-.card-logo{width:125px;max-height:90px;object-fit:contain;display:block}
-.emoji{display:none;font-size:62px;line-height:1;animation:pop .55s ease}
-.emoji.show{display:block}
+body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;color:#31413d;background:radial-gradient(circle at 12% 14%,#2aa58a 0,transparent 23%),radial-gradient(circle at 88% 70%,#54b99a 0,transparent 20%),linear-gradient(145deg,#087866,#006858 55%,#0a8973);display:flex;flex-direction:column;align-items:center;padding:0 14px 36px;overflow-x:hidden;position:relative}
+body:before,body:after{position:fixed;pointer-events:none;z-index:0;font-size:100px;opacity:.2;filter:drop-shadow(0 7px 5px #004d3c);content:"🍃"}
+body:before{top:22px;left:-22px;transform:rotate(-35deg)}body:after{bottom:18px;right:-28px;transform:rotate(45deg)}
+.lang-toggle{position:relative;z-index:2;margin:14px auto 0;border:1px solid #ffffff99;background:#ffffff20;color:#fff;border-radius:999px;padding:8px 16px;font:700 14px Tahoma,Arial;cursor:pointer;backdrop-filter:blur(5px)}
+body.english{direction:ltr;font-family:Arial,Tahoma,sans-serif}body.english .card{text-align:center}body.english .branch-search,body.english textarea,body.english input.contact{text-align:left;direction:ltr}body.english .categories{direction:ltr}body.english .branch-option .branch-en{display:none}body.english .branch-option{direction:ltr}body.english .selected-branch{direction:ltr}
+.top-logo{width:160px;height:110px;margin:20px auto 0;display:block;object-fit:contain;filter:brightness(0) invert(1);position:relative;z-index:1}
+.card{position:relative;z-index:1;width:min(100%,480px);background:linear-gradient(180deg,#fff 0%,#fbfffd 100%);border:1px solid rgba(255,255,255,.7);border-radius:32px;padding:50px 22px 28px;text-align:center;box-shadow:0 24px 55px rgba(0,45,35,.25);margin:12px 0 20px}
+.card:before{content:"✦";position:absolute;top:-45px;left:50%;transform:translateX(-50%);width:90px;height:90px;border-radius:50%;background:#fff;border:7px solid #e8f5f0;box-shadow:0 8px 20px #004b3b22;display:grid;place-items:center;color:var(--green);font-size:37px}
+.brand-area{min-height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}.card-logo{display:none;width:105px;max-height:75px;object-fit:contain}.emoji{display:none;font-size:52px;line-height:1;animation:pop .55s ease}.emoji.show{display:block}
 @keyframes pop{0%{opacity:0;transform:scale(.35) rotate(-12deg)}65%{transform:scale(1.12) rotate(4deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
-h1{margin:5px 0 7px;font-size:25px;color:#176f65}
-.subtitle{margin:0 0 17px;color:#777;font-size:15px}
-.branch-screen{display:block}
-.branch-search{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px 14px;font-family:inherit;font-size:15px;outline:none;margin:0 0 12px}
-.branch-search:focus{border-color:#178579;box-shadow:0 0 0 3px rgba(23,133,121,.09)}
-.branch-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:330px;overflow:auto}
-.branch-option{border:1px solid #d9e8e5;background:#f7fbfa;color:#176f65;border-radius:12px;padding:12px 8px;font-family:inherit;font-size:14px;cursor:pointer}
-.branch-option:hover,.branch-option.selected{background:#e4f3f0;border-color:#178579}
-.no-branches{display:none;color:#777;padding:12px}
-.rating-screen{display:none}
-.selected-branch{background:#e4f3f0;color:#176f65;padding:9px 12px;border-radius:10px;font-size:14px;margin:0 0 14px}
-.change-branch{background:transparent;border:0;color:#176f65;text-decoration:underline;font-family:inherit;cursor:pointer;margin-bottom:12px}
-.stars{display:flex;justify-content:center;direction:ltr;gap:4px}
-.star{border:0;background:transparent;padding:2px;font-size:42px;line-height:1;color:#d5d5d5;cursor:pointer;transition:.18s ease}
-.star:hover{transform:scale(1.1)}
-.star.active{color:#ffc928}
-.feedback{display:none;margin-top:18px;animation:reveal .35s ease}
-.feedback.show{display:block}
-@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.message{margin:0 0 14px;color:#176f65;font-size:18px;font-weight:bold;line-height:1.65}
-.categories{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.category{border:1px solid #d9e8e5;background:#f7fbfa;color:#176f65;border-radius:12px;padding:11px 7px;font-family:inherit;font-size:14px;cursor:pointer;transition:.2s ease}
-.category:hover,.category.selected{background:#e4f3f0;border-color:#178579}
-.category:last-child{grid-column:1/-1}
-textarea,input.contact{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px 14px;font-family:inherit;font-size:14px;outline:none;margin-top:9px;background:#fff;color:#333}
-textarea{min-height:105px;resize:vertical}
-textarea:focus,input.contact:focus{border-color:#178579;box-shadow:0 0 0 3px rgba(23,133,121,.09)}
-.submit-btn,.google-btn{width:100%;border:0;border-radius:13px;padding:14px;margin-top:12px;font-family:inherit;font-size:16px;font-weight:bold;cursor:pointer}
-.submit-btn{background:#178579;color:white}
-.google-btn{background:#f4b400;color:white}
-.submit-btn:hover,.google-btn:hover{opacity:.92;transform:translateY(-1px)}
-.status{display:none;margin-top:10px;color:#178579;font-size:14px;font-weight:bold}
-.status.show{display:block}
-.small-note{color:#999;font-size:12px;margin-top:8px}
-.google-message{font-size:16px;line-height:1.8}
-.google-word{direction:ltr;unicode-bidi:isolate}
-@media(max-width:380px){.star{font-size:37px}.card{padding:22px 15px 19px}.branch-list{grid-template-columns:1fr 1fr}}
+h1{margin:8px 0 9px;font-size:clamp(25px,7vw,32px);font-weight:800;color:var(--ink);letter-spacing:-.4px}.subtitle{margin:0 0 20px;color:#747d79;font-size:16px;line-height:1.7}
+.branch-screen{display:block}.branch-search{width:100%;border:2px solid #b7dcd0;border-radius:999px;padding:15px 18px;font-family:inherit;font-size:15px;outline:none;margin:0 0 16px;background:#fbfefd;color:#31413d;text-align:center;transition:.2s}.branch-search::placeholder{color:#9aa7a2}.branch-search:focus{border-color:var(--green2);box-shadow:0 0 0 4px #0e927e15}
+.branch-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-height:430px;overflow:auto;padding:2px 2px 6px}.branch-option{min-height:88px;border:2px solid #b7dcd0;background:linear-gradient(180deg,#fff,#f6fbf9);color:var(--ink);border-radius:25px;padding:12px 10px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #d7e9e2;transition:.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.branch-option:before{content:"⌖";display:grid;place-items:center;background:#e4f4ee;color:#16947e;border-radius:50%;width:27px;height:27px;font-size:19px;font-weight:normal}.branch-option .branch-en{font-size:12px;font-weight:400;color:#929b97;direction:ltr}.branch-option:hover,.branch-option.selected{background:#e7f6f0;border-color:#178d78;transform:translateY(-2px);box-shadow:0 5px 0 #c2e2d6}.no-branches{display:none;color:#777;padding:12px}
+.rating-screen{display:none}.selected-branch{display:inline-block;background:#e8f6f0;color:var(--ink);border:1px solid #c9e5d9;padding:9px 16px;border-radius:999px;font-size:14px;margin:0 0 7px;font-weight:bold}.change-branch{display:block;margin:0 auto 16px;background:#fff;border:1px solid #b7dcd0;color:var(--ink);border-radius:999px;padding:8px 16px;font-family:inherit;cursor:pointer;font-size:13px}
+.stars{display:flex;justify-content:center;direction:ltr;gap:6px;margin:8px 0 14px}.star{border:0;background:transparent;padding:1px;font-size:clamp(40px,11vw,54px);line-height:1;color:#e0e5e2;cursor:pointer;transition:transform .18s,color .18s;filter:drop-shadow(0 2px 1px #0000000c)}.star:hover{transform:scale(1.13)}.star.active{color:var(--gold);filter:drop-shadow(0 3px 2px #d59c1740)}
+.feedback{display:none;margin-top:18px;animation:reveal .35s ease;background:#f8fcfa;border:1px solid #dceee7;border-radius:24px;padding:18px 14px 16px}.feedback.show{display:block}@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.message{margin:0 0 15px;color:var(--ink);font-size:18px;font-weight:bold;line-height:1.7}.categories{display:grid;grid-template-columns:1fr 1fr;gap:10px}.category{border:2px solid #b7dcd0;background:#fff;color:var(--ink);border-radius:999px;padding:12px 8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}.category:hover,.category.selected{background:#e3f4ee;border-color:#178d78;transform:translateY(-1px)}.category:last-child{grid-column:1/-1;max-width:65%;justify-self:center;width:100%}
+textarea,input.contact{width:100%;border:2px solid #b7dcd0;border-radius:16px;padding:14px;font-family:inherit;font-size:14px;outline:none;margin-top:12px;background:#fff;color:#333}textarea{min-height:115px;resize:vertical}textarea:focus,input.contact:focus{border-color:var(--green2);box-shadow:0 0 0 4px #0e927e12}.submit-btn,.google-btn{width:100%;border:0;border-radius:999px;padding:15px;margin-top:14px;font-family:inherit;font-size:16px;font-weight:bold;cursor:pointer;transition:.2s}.submit-btn{background:linear-gradient(135deg,#087765,#0e927e);color:white;box-shadow:0 5px 14px #08776530}.google-btn{background:linear-gradient(135deg,#ffca37,#f4a900);color:#4f3b00;box-shadow:0 5px 14px #f4b40030}.submit-btn:hover,.google-btn:hover{opacity:.94;transform:translateY(-2px)}button:disabled{opacity:.6;cursor:wait}.status{display:none;margin-top:12px;color:var(--green);font-size:14px;font-weight:bold}.status.show{display:block}.small-note{color:#939c98;font-size:12px;margin-top:12px}.google-message{font-size:17px;line-height:1.8}.google-word{direction:ltr;unicode-bidi:isolate;font-weight:900}
+@media(max-width:380px){.card{padding:47px 15px 22px;border-radius:26px}.branch-list{gap:9px}.branch-option{min-height:80px;font-size:14px;border-radius:20px}.star{font-size:39px}.top-logo{width:140px;height:95px}.categories{gap:8px}.category{font-size:14px}}
 </style>
 </head>
 <body>
+<button id="languageToggle" class="lang-toggle" type="button">English</button>
 <img class="top-logo" src="logo.png" alt="عنبه">
 <main class="card">
 <div class="brand-area">
@@ -62,18 +37,18 @@ textarea:focus,input.contact:focus{border-color:#178579;box-shadow:0 0 0 3px rgb
 </div>
 
 <section id="branchScreen" class="branch-screen">
-<h1>اختر الفرع</h1>
-<p class="subtitle">أي فرع قمت بزيارته؟</p>
-<input id="branchSearch" class="branch-search" type="search" placeholder="ابحث عن الفرع..." autocomplete="off">
+<h1 data-i18n="branchTitle">اختر الفرع</h1>
+<p class="subtitle" data-i18n="branchSubtitle">أي فرع قمت بزيارته؟</p>
+<input id="branchSearch" class="branch-search" type="search" placeholder="ابحث عن الفرع..." data-i18n-placeholder="branchSearchPlaceholder" autocomplete="off">
 <div id="branchList" class="branch-list"></div>
-<div id="noBranches" class="no-branches">لا توجد فروع مطابقة لبحثك</div>
+<div id="noBranches" class="no-branches"><span data-i18n="noBranches">لا توجد فروع مطابقة لبحثك</span></div>
 </section>
 
 <section id="ratingScreen" class="rating-screen">
 <div id="selectedBranchLabel" class="selected-branch"></div>
-<button id="changeBranch" class="change-branch">تغيير الفرع</button>
-<h1>كيف كانت تجربتك؟</h1>
-<p class="subtitle">رأيك يهمنا ويصنع الفرق</p>
+<button id="changeBranch" class="change-branch" data-i18n="changeBranch">تغيير الفرع</button>
+<h1 data-i18n="ratingTitle">كيف كانت تجربتك؟</h1>
+<p class="subtitle" data-i18n="ratingSubtitle">رأيك يهمنا ويصنع الفرق</p>
 <div class="stars">
 <button class="star" data-rating="1" aria-label="نجمة واحدة">★</button>
 <button class="star" data-rating="2" aria-label="نجمتان">★</button>
@@ -83,24 +58,24 @@ textarea:focus,input.contact:focus{border-color:#178579;box-shadow:0 0 0 3px rgb
 </div>
 
 <section id="negativeFeedback" class="feedback">
-<p class="message">نعتذر منك 🙏 ساعدنا لحل المشكلة</p>
+<p class="message" data-i18n="negativeMessage">نعتذر منك 🙏 ساعدنا لحل المشكلة</p>
 <div class="categories">
-<button class="category" data-category="الأكل">🍽️ الأكل</button>
-<button class="category" data-category="الخدمة">🙋‍♂️ الخدمة</button>
-<button class="category" data-category="السرعة">⏱️ السرعة</button>
-<button class="category" data-category="النظافة">✨ النظافة</button>
-<button class="category" data-category="أخرى">💬 أخرى</button>
+<button class="category" data-category="الأكل" data-i18n="food">🍽️ الأكل</button>
+<button class="category" data-category="الخدمة" data-i18n="service">🙋‍♂️ الخدمة</button>
+<button class="category" data-category="السرعة" data-i18n="speed">⏱️ السرعة</button>
+<button class="category" data-category="النظافة" data-i18n="cleanliness">✨ النظافة</button>
+<button class="category" data-category="أخرى" data-i18n="other">💬 أخرى</button>
 </div>
-<textarea id="note" placeholder="اكتب ملاحظتك (اختياري)"></textarea>
-<input id="contact" class="contact" type="text" placeholder="جوالك أو إيميلك لو تبغى نتواصل معك (اختياري)">
-<button id="submitBtn" class="submit-btn">إرسال ملاحظتك</button>
+<textarea id="note" placeholder="اكتب ملاحظتك (اختياري)" data-i18n-placeholder="notePlaceholder"></textarea>
+<input id="contact" class="contact" type="text" placeholder="جوالك أو إيميلك لو تبغى نتواصل معك (اختياري)" data-i18n-placeholder="contactPlaceholder">
+<button id="submitBtn" class="submit-btn" data-i18n="submit">إرسال ملاحظتك</button>
 <div id="negativeStatus" class="status"></div>
-<div class="small-note">ملاحظتك تساعدنا نحسن تجربتك 🤍</div>
+<div class="small-note" data-i18n="smallNote">ملاحظتك تساعدنا نحسن تجربتك 🤍</div>
 </section>
 
 <section id="positiveFeedback" class="feedback">
-<p class="message google-message"><span>يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في</span> <span class="google-word" dir="ltr">Google</span> <span>⭐</span></p>
-<button id="googleBtn" class="google-btn">⭐ قيمنا على Google</button>
+<p class="message google-message"><span data-i18n="positiveMessage">يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في</span> <span class="google-word" dir="ltr">Google</span> <span>⭐</span></p>
+<button id="googleBtn" class="google-btn" data-i18n="googleButton">⭐ قيمنا على Google</button>
 <div id="positiveStatus" class="status"></div>
 </section>
 </section>
@@ -110,25 +85,25 @@ textarea:focus,input.contact:focus{border-color:#178579;box-shadow:0 0 0 3px rgb
 const GOOGLE_SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxm1m2QRjR9l8RRTkk8wdSAm43c0FhcAxx_TipGDMM_Wp_1-2K9q90ZtWMwEJkrPpVX/exec";
 
 const BRANCHES = [
- {id:"almughrizat",name:"المغرزات",googleUrl:"https://maps.app.goo.gl/5z4T9W9VDjqMA1EPA?g_st=ac"},
- {id:"althumamah",name:"الثمامة",googleUrl:"https://maps.app.goo.gl/uSNfXh5opFWWRstp8?g_st=ac"},
- {id:"alsafa",name:"الصفا",googleUrl:"https://maps.app.goo.gl/3tMVTEtGkmNHybpw5"},
- {id:"alrayan",name:"الريان",googleUrl:"https://maps.app.goo.gl/C3pDUv39WiEyiEHBA"},
- {id:"alsuwaidi",name:"السويدي",googleUrl:"https://maps.app.goo.gl/ZLj9X1omjuFAB2MD9"},
- {id:"alshifa",name:"الشفاء",googleUrl:"https://maps.app.goo.gl/i2JPkBFirMCb6FMa8"},
- {id:"alnaseem",name:"النسيم",googleUrl:"https://maps.app.goo.gl/CnaMRxx7XhPvrBUx8"},
- {id:"alarid",name:"العارض",googleUrl:"https://maps.app.goo.gl/nnrXyrjJ8g6k8v847"},
- {id:"alquds",name:"القدس",googleUrl:"https://maps.app.goo.gl/41ypzzX53x6PLWkz8"},
- {id:"alqirawan",name:"القيروان",googleUrl:"https://maps.app.goo.gl/2fvNZb5Vf3mmJTYt6"},
- {id:"almalqa",name:"الملقا",googleUrl:"https://maps.app.goo.gl/nMMRsbfMQZoxf53X9"},
- {id:"alnarjis",name:"النرجس",googleUrl:"https://maps.app.goo.gl/ytUh8HF9vGeU2vHG6"},
- {id:"alnazim",name:"النظيم",googleUrl:"https://maps.app.goo.gl/yqKCwsFzgTsdUWGw7"},
- {id:"alnahdah",name:"النهضة",googleUrl:"https://maps.app.goo.gl/hGDCiiPa2L5Do5Yw8"},
- {id:"ghirnatah",name:"غرناطة",googleUrl:"https://maps.app.goo.gl/RRZgYE27UonvRcoeA"},
- {id:"aisha",name:"عائشة",googleUrl:"https://maps.app.goo.gl/b6znFuL32D6ghoHT6"},
- {id:"irqa",name:"عرقة",googleUrl:"https://maps.app.goo.gl/UsDqr94fkBqd8P3u5"},
- {id:"qurtubah",name:"قرطبة",googleUrl:"https://maps.app.goo.gl/9WidDd8hfLmnxH8N8"},
- {id:"laban",name:"لبن",googleUrl:"https://maps.app.goo.gl/3osUHaS4gue8uLts8"}
+ {id:"almughrizat",english:"Al Mughrizat",name:"المغرزات",googleUrl:"https://maps.app.goo.gl/5z4T9W9VDjqMA1EPA?g_st=ac"},
+ {id:"althumamah",english:"Al Thumamah",name:"الثمامة",googleUrl:"https://maps.app.goo.gl/uSNfXh5opFWWRstp8?g_st=ac"},
+ {id:"alsafa",english:"Al Safa",name:"الصفا",googleUrl:"https://maps.app.goo.gl/3tMVTEtGkmNHybpw5"},
+ {id:"alrayan",english:"Al Rayyan",name:"الريان",googleUrl:"https://maps.app.goo.gl/C3pDUv39WiEyiEHBA"},
+ {id:"alsuwaidi",english:"Al Suwaidi",name:"السويدي",googleUrl:"https://maps.app.goo.gl/ZLj9X1omjuFAB2MD9"},
+ {id:"alshifa",english:"Al Shifa",name:"الشفاء",googleUrl:"https://maps.app.goo.gl/i2JPkBFirMCb6FMa8"},
+ {id:"alnaseem",english:"Al Naseem",name:"النسيم",googleUrl:"https://maps.app.goo.gl/CnaMRxx7XhPvrBUx8"},
+ {id:"alarid",english:"Al Arid",name:"العارض",googleUrl:"https://maps.app.goo.gl/nnrXyrjJ8g6k8v847"},
+ {id:"alquds",english:"Al Quds",name:"القدس",googleUrl:"https://maps.app.goo.gl/41ypzzX53x6PLWkz8"},
+ {id:"alqirawan",english:"Al Qirawan",name:"القيروان",googleUrl:"https://maps.app.goo.gl/2fvNZb5Vf3mmJTYt6"},
+ {id:"almalqa",english:"Al Malqa",name:"الملقا",googleUrl:"https://maps.app.goo.gl/nMMRsbfMQZoxf53X9"},
+ {id:"alnarjis",english:"Al Narjis",name:"النرجس",googleUrl:"https://maps.app.goo.gl/ytUh8HF9vGeU2vHG6"},
+ {id:"alnazim",english:"Al Nazim",name:"النظيم",googleUrl:"https://maps.app.goo.gl/yqKCwsFzgTsdUWGw7"},
+ {id:"alnahdah",english:"Al Nahdah",name:"النهضة",googleUrl:"https://maps.app.goo.gl/hGDCiiPa2L5Do5Yw8"},
+ {id:"ghirnatah",english:"Ghirnatah",name:"غرناطة",googleUrl:"https://maps.app.goo.gl/RRZgYE27UonvRcoeA"},
+ {id:"aisha",english:"Aisha",name:"عائشة",googleUrl:"https://maps.app.goo.gl/b6znFuL32D6ghoHT6"},
+ {id:"irqa",english:"Irqah",name:"عرقة",googleUrl:"https://maps.app.goo.gl/UsDqr94fkBqd8P3u5"},
+ {id:"qurtubah",english:"Qurtubah",name:"قرطبة",googleUrl:"https://maps.app.goo.gl/9WidDd8hfLmnxH8N8"},
+ {id:"laban",english:"Laban",name:"لبن",googleUrl:"https://maps.app.goo.gl/3osUHaS4gue8uLts8"}
 ];
 
 let selectedBranch = null;
@@ -153,13 +128,14 @@ const negativeStatus=document.getElementById("negativeStatus");
 const positiveStatus=document.getElementById("positiveStatus");
 
 function renderBranches(filter=""){
- const filtered=BRANCHES.filter(b=>b.name.includes(filter.trim()));
+ const filtered=BRANCHES.filter(b=>b.name.includes(filter.trim())||(b.english||"").toLowerCase().includes(filter.trim().toLowerCase()));
  branchList.innerHTML="";
  filtered.forEach(branch=>{
   const button=document.createElement("button");
   button.className="branch-option";
   button.type="button";
-  button.textContent=branch.name;
+  const englishNames={almughrizat:"Al Mughrizat",althumamah:"Al Thumamah",alsafa:"Al Safa",alrayan:"Al Rayyan",alsuwaidi:"Al Suwaidi",alshifa:"Al Shifa",alnaseem:"Al Naseem",alarid:"Al Arid",alquds:"Al Quds",alqirawan:"Al Qirawan",almalqa:"Al Malqa",alnarjis:"Al Narjis",alnazim:"Al Nazim",alnahdah:"Al Nahdah",ghirnatah:"Ghirnatah",aisha:"Aisha",irqa:"Irqah",qurtubah:"Qurtubah",laban:"Laban"};
+  button.innerHTML=currentLanguage==="en"?`<span>${branch.english||branch.name}</span>`:`<span>${branch.name}</span><span class="branch-en" lang="en">${branch.english||englishNames[branch.id]||""}</span>`;
   button.addEventListener("click",()=>selectBranch(branch));
   branchList.appendChild(button);
  });
@@ -169,7 +145,7 @@ branchSearch.addEventListener("input",()=>renderBranches(branchSearch.value));
 
 function selectBranch(branch){
  selectedBranch=branch;
- selectedBranchLabel.textContent="الفرع المختار: "+branch.name;
+ selectedBranchLabel.textContent=TRANSLATIONS[currentLanguage].branchLabel+(currentLanguage==="en"?(branch.english||branch.name):branch.name);
  branchScreen.style.display="none";
  ratingScreen.style.display="block";
  resetRating();
@@ -197,9 +173,9 @@ function resetRating(){
  cardLogo.style.display="block";
  emoji.classList.remove("show");
  submitBtn.disabled=false;
- submitBtn.textContent="إرسال ملاحظتك";
+ submitBtn.textContent=TRANSLATIONS[currentLanguage].submit;
  googleBtn.disabled=false;
- googleBtn.textContent="⭐ قيمنا على Google";
+ googleBtn.textContent=TRANSLATIONS[currentLanguage].googleButton;
 }
 
 function updateStars(rating){
@@ -251,31 +227,31 @@ async function sendToGoogleSheets(extra={}){
 
 submitBtn.addEventListener("click",async()=>{
  if(!selectedCategory){
-  negativeStatus.textContent="اختر نوع المشكلة أولاً 🙏";
+  negativeStatus.textContent=TRANSLATIONS[currentLanguage].chooseCategory;
   negativeStatus.classList.add("show");
   return;
  }
  submitBtn.disabled=true;
- submitBtn.textContent="جاري الإرسال...";
+ submitBtn.textContent=TRANSLATIONS[currentLanguage].sending;
  await sendToGoogleSheets();
- negativeStatus.textContent="تم استلام ملاحظتك، شكرًا لك 🤍";
+ negativeStatus.textContent=TRANSLATIONS[currentLanguage].sent;
  negativeStatus.classList.add("show");
- submitBtn.textContent="تم الإرسال ✓";
+ submitBtn.textContent=TRANSLATIONS[currentLanguage].submitted;
 });
 
 googleBtn.addEventListener("click",async()=>{
  if(!selectedBranch?.googleUrl){
-  positiveStatus.textContent="رابط تقييم Google غير متوفر لهذا الفرع.";
+  positiveStatus.textContent=TRANSLATIONS[currentLanguage].googleUnavailable;
   positiveStatus.classList.add("show");
   return;
  }
  googleBtn.disabled=true;
- googleBtn.textContent="جاري فتح Google...";
+ googleBtn.textContent=TRANSLATIONS[currentLanguage].openGoogle;
  await sendToGoogleSheets({action:"google_review"});
  window.location.href=selectedBranch.googleUrl;
 });
 
-renderBranches();
-</script>
-</body>
-</html>
+
+const TRANSLATIONS={
+ ar:{branchTitle:"اختر الفرع",branchSubtitle:"أي فرع قمت بزيارته؟",branchSearchPlaceholder:"ابحث عن الفرع...",noBranches:"لا توجد فروع مطابقة لبحثك",changeBranch:"تغيير الفرع",ratingTitle:"كيف كانت تجربتك؟",ratingSubtitle:"رأيك يهمنا ويصنع الفرق",negativeMessage:"نعتذر منك 🙏 ساعدنا لحل المشكلة",food:"🍽️ الطعام",service:"🙋‍♂️ الخدمة",speed:"⏱️ السرعة",cleanliness:"✨ النظافة",other:"💬 أخرى",notePlaceholder:"اكتب ملاحظتك (اختياري)",contactPlaceholder:"رقم الجوال أو البريد للتواصل (اختياري)",submit:"إرسال ملاحظتك",smallNote:"ملاحظتك تساعدنا نحسن تجربتك 🤍",positiveMessage:"يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في",googleButton:"⭐ قيمنا على Google",branchLabel:"الفرع المختار: ",chooseCategory:"اختر نوع المشكلة أولاً 🙏",sent:"تم استلام ملاحظتك، شكرًا لك 🤍",sending:"جاري الإرسال...",submitted:"تم الإرسال ✓",openGoogle:"جاري فتح Google...",googleUnavailable:"رابط تقييم Google غير متوفر لهذا الفرع."},
+ en:{branchTitle:"Choose a branch",branchSubtitle:"Which branch did you visit?",branchSearchPlaceholder:"Search for a branch...",noBranches:"No branches match your search",changeBranch:"Change branch",ratingTitle:"How was your experience?",ratingSubtitle:"Your feedback matters and helps us improve",negativeMessage:"We're sorry 🙏 Please help us understand the issue",food:"🍽️ Food",service:"🙋‍♂️ Service",speed:"⏱️ Speed",cleanliness:"✨ Cleanliness",other:"💬 Other",notePlaceholder:"Tell us about your experience (optional)",contactPlaceholder:"Phone number or email (optional)",submit:"Send feedback",smallNote:"Your feedback helps us improve 🤍",positiveMessage:"We're glad you enjoyed it! 🎉 Share your review on",googleButton:"⭐ Rate us on Google",branchLabel:"Selected branch: 

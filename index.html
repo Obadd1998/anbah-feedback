@@ -1,942 +1,281 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>تقييم تجربة عنبه</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Tahoma, Arial, sans-serif;
-      background: #178579;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 14px 35px;
-    }
-
-    /* شعار وهوية عنبه */
-    .top-logo {
-      width: 150px;
-      height: auto;
-      margin: 5px auto 18px;
-      display: block;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-    }
-
-    /* الكرت الأبيض */
-    .card {
-      width: min(100%, 460px);
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 24px 18px 21px;
-      text-align: center;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.13);
-    }
-
-    /* منطقة الشعار داخل التقييم */
-    .brand-area {
-      min-height: 95px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card-logo {
-      width: 125px;
-      max-height: 90px;
-      object-fit: contain;
-      display: block;
-    }
-
-    /* الإيموجي يظهر بعد اختيار النجوم */
-    .emoji {
-      display: none;
-      font-size: 62px;
-      line-height: 1;
-      animation: pop 0.55s ease;
-    }
-
-    .emoji.show {
-      display: block;
-    }
-
-    @keyframes pop {
-      0% {
-        opacity: 0;
-        transform: scale(0.35) rotate(-12deg);
-      }
-
-      65% {
-        transform: scale(1.12) rotate(4deg);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-      }
-    }
-
-    h1 {
-      margin: 5px 0 7px;
-      font-size: 25px;
-      color: #176f65;
-    }
-
-    .subtitle {
-      margin: 0 0 17px;
-      color: #777;
-      font-size: 15px;
-    }
-
-    /* النجوم */
-    .stars {
-      display: flex;
-      justify-content: center;
-      direction: ltr;
-      gap: 4px;
-    }
-
-    .star {
-      border: 0;
-      background: transparent;
-      padding: 2px;
-      font-size: 42px;
-      line-height: 1;
-      color: #d5d5d5;
-      cursor: pointer;
-      transition: 0.18s ease;
-    }
-
-    .star:hover {
-      transform: scale(1.1);
-    }
-
-    .star.active {
-      color: #ffc928;
-    }
-
-    /* الأقسام مخفية في البداية */
-    .feedback {
-      display: none;
-      margin-top: 18px;
-      animation: reveal 0.35s ease;
-    }
-
-    .feedback.show {
-      display: block;
-    }
-
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .message {
-      margin: 0 0 14px;
-      color: #176f65;
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.65;
-    }
-
-    /* أزرار نوع المشكلة */
-    .categories {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-    }
-
-    .category {
-      border: 1px solid #d9e8e5;
-      background: #f7fbfa;
-      color: #176f65;
-      border-radius: 12px;
-      padding: 11px 7px;
-      font-family: inherit;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .category:hover,
-    .category.selected {
-      background: #e4f3f0;
-      border-color: #178579;
-    }
-
-    .category:last-child {
-      grid-column: 1 / -1;
-    }
-
-    /* الملاحظات والتواصل */
-    textarea,
-    input {
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 13px;
-      padding: 13px 14px;
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      margin-top: 9px;
-      background: #fff;
-      color: #333;
-    }
-
-    textarea {
-      min-height: 105px;
-      resize: vertical;
-    }
-
-    textarea:focus,
-    input:focus {
-      border-color: #178579;
-      box-shadow: 0 0 0 3px rgba(23, 133, 121, 0.09);
-    }
-
-    /* الأزرار */
-    .submit-btn,
-    .google-btn {
-      width: 100%;
-      border: 0;
-      border-radius: 13px;
-      padding: 14px;
-      margin-top: 12px;
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .submit-btn {
-      background: #178579;
-      color: white;
-    }
-
-    .google-btn {
-      background: #f4b400;
-      color: white;
-    }
-
-    .submit-btn:hover,
-    .google-btn:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-    }
-
-    .status {
-      display: none;
-      margin-top: 10px;
-      color: #178579;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .status.show {
-      display: block;
-    }
-
-    .small-note {
-      color: #999;
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    @media (max-width: 380px) {
-      .star {
-        font-size: 37px;
-      }
-
-      .card {
-        padding: 22px 15px 19px;
-      }
-    }
-    .google-message {
-  font-size: 16px;
-  line-height: 1.8;
-  white-space: nowrap;
-}
-
-.google-word {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقييم تجربة عنبه</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:#178579;color:#333;display:flex;flex-direction:column;align-items:center;padding:20px 14px 35px}
+.top-logo{width:150px;height:auto;margin:5px auto 18px;display:block;object-fit:contain;filter:brightness(0) invert(1)}
+.card{width:min(100%,460px);background:#fff;border-radius:24px;padding:24px 18px 21px;text-align:center;box-shadow:0 12px 35px rgba(0,0,0,.13)}
+.brand-area{min-height:95px;display:flex;align-items:center;justify-content:center}
+.card-logo{width:125px;max-height:90px;object-fit:contain;display:block}
+.emoji{display:none;font-size:62px;line-height:1;animation:pop .55s ease}
+.emoji.show{display:block}
+@keyframes pop{0%{opacity:0;transform:scale(.35) rotate(-12deg)}65%{transform:scale(1.12) rotate(4deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+h1{margin:5px 0 7px;font-size:25px;color:#176f65}
+.subtitle{margin:0 0 17px;color:#777;font-size:15px}
+.branch-screen{display:block}
+.branch-search{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px 14px;font-family:inherit;font-size:15px;outline:none;margin:0 0 12px}
+.branch-search:focus{border-color:#178579;box-shadow:0 0 0 3px rgba(23,133,121,.09)}
+.branch-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:330px;overflow:auto}
+.branch-option{border:1px solid #d9e8e5;background:#f7fbfa;color:#176f65;border-radius:12px;padding:12px 8px;font-family:inherit;font-size:14px;cursor:pointer}
+.branch-option:hover,.branch-option.selected{background:#e4f3f0;border-color:#178579}
+.no-branches{display:none;color:#777;padding:12px}
+.rating-screen{display:none}
+.selected-branch{background:#e4f3f0;color:#176f65;padding:9px 12px;border-radius:10px;font-size:14px;margin:0 0 14px}
+.change-branch{background:transparent;border:0;color:#176f65;text-decoration:underline;font-family:inherit;cursor:pointer;margin-bottom:12px}
+.stars{display:flex;justify-content:center;direction:ltr;gap:4px}
+.star{border:0;background:transparent;padding:2px;font-size:42px;line-height:1;color:#d5d5d5;cursor:pointer;transition:.18s ease}
+.star:hover{transform:scale(1.1)}
+.star.active{color:#ffc928}
+.feedback{display:none;margin-top:18px;animation:reveal .35s ease}
+.feedback.show{display:block}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.message{margin:0 0 14px;color:#176f65;font-size:18px;font-weight:bold;line-height:1.65}
+.categories{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.category{border:1px solid #d9e8e5;background:#f7fbfa;color:#176f65;border-radius:12px;padding:11px 7px;font-family:inherit;font-size:14px;cursor:pointer;transition:.2s ease}
+.category:hover,.category.selected{background:#e4f3f0;border-color:#178579}
+.category:last-child{grid-column:1/-1}
+textarea,input.contact{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px 14px;font-family:inherit;font-size:14px;outline:none;margin-top:9px;background:#fff;color:#333}
+textarea{min-height:105px;resize:vertical}
+textarea:focus,input.contact:focus{border-color:#178579;box-shadow:0 0 0 3px rgba(23,133,121,.09)}
+.submit-btn,.google-btn{width:100%;border:0;border-radius:13px;padding:14px;margin-top:12px;font-family:inherit;font-size:16px;font-weight:bold;cursor:pointer}
+.submit-btn{background:#178579;color:white}
+.google-btn{background:#f4b400;color:white}
+.submit-btn:hover,.google-btn:hover{opacity:.92;transform:translateY(-1px)}
+.status{display:none;margin-top:10px;color:#178579;font-size:14px;font-weight:bold}
+.status.show{display:block}
+.small-note{color:#999;font-size:12px;margin-top:8px}
+.google-message{font-size:16px;line-height:1.8}
+.google-word{direction:ltr;unicode-bidi:isolate}
+@media(max-width:380px){.star{font-size:37px}.card{padding:22px 15px 19px}.branch-list{grid-template-columns:1fr 1fr}}
+</style>
 </head>
-
 <body>
-
-  <!-- ============================= -->
-  <!-- شعار وهوية عنبه -->
-  <!-- ============================= -->
-
-  <img
-    class="top-logo"
-    src="logo.png"
-    alt="عنبه"
-  >
-
-  <!-- ============================= -->
-  <!-- الكرت الرئيسي -->
-  <!-- ============================= -->
-
-  <main class="card">
-
-    <!--
-      في البداية يظهر شعار عنبه.
-      بعد اختيار النجوم يتحول هذا المكان إلى الإيموجي.
-    -->
-
-    <div class="brand-area">
-
-      <img
-        id="cardLogo"
-        class="card-logo"
-        src="logo.png"
-        alt="عنبه"
-      >
-
-      <div
-        id="emoji"
-        class="emoji"
-        aria-hidden="true"
-      ></div>
-
-    </div>
-
-
-    <h1>كيف كانت تجربتك؟</h1>
-
-    <p class="subtitle">
-      رأيك يهمنا ويصنع الفرق
-    </p>
-
-
-    <!-- ============================= -->
-    <!-- النجوم -->
-    <!-- ============================= -->
-
-    <div class="stars">
-
-      <button
-        class="star"
-        data-rating="1"
-        aria-label="نجمة واحدة"
-      >
-        ★
-      </button>
-
-      <button
-        class="star"
-        data-rating="2"
-        aria-label="نجمتان"
-      >
-        ★
-      </button>
-
-      <button
-        class="star"
-        data-rating="3"
-        aria-label="ثلاث نجوم"
-      >
-        ★
-      </button>
-
-      <button
-        class="star"
-        data-rating="4"
-        aria-label="أربع نجوم"
-      >
-        ★
-      </button>
-
-      <button
-        class="star"
-        data-rating="5"
-        aria-label="خمس نجوم"
-      >
-        ★
-      </button>
-
-    </div>
-
-
-    <!-- ====================================== -->
-    <!-- تقييم من 1 إلى 3 نجوم -->
-    <!-- ====================================== -->
-
-    <section
-      id="negativeFeedback"
-      class="feedback"
-    >
-
-      <p class="message">
-        نعتذر منك 🙏 ساعدنا لحل المشكلة
-      </p>
-
-
-      <div class="categories">
-
-        <button
-          class="category"
-          data-category="الأكل"
-        >
-          🍽️ الأكل
-        </button>
-
-        <button
-          class="category"
-          data-category="الخدمة"
-        >
-          🙋‍♂️ الخدمة
-        </button>
-
-        <button
-          class="category"
-          data-category="السرعة"
-        >
-          ⏱️ السرعة
-        </button>
-
-        <button
-          class="category"
-          data-category="النظافة"
-        >
-          ✨ النظافة
-        </button>
-
-        <button
-          class="category"
-          data-category="أخرى"
-        >
-          💬 أخرى
-        </button>
-
-      </div>
-
-
-      <textarea
-        id="note"
-        placeholder="اكتب ملاحظتك (اختياري)"
-      ></textarea>
-
-
-      <input
-        id="contact"
-        type="text"
-        placeholder="جوالك أو إيميلك لو تبغى نتواصل معك (اختياري)"
-      >
-
-
-      <button
-        id="submitBtn"
-        class="submit-btn"
-      >
-        إرسال ملاحظتك
-      </button>
-
-
-      <div
-        id="negativeStatus"
-        class="status"
-      ></div>
-
-
-      <div class="small-note">
-        ملاحظتك تساعدنا نحسن تجربتك 🤍
-      </div>
-
-    </section>
-
-
-    <!-- ====================================== -->
-    <!-- تقييم 4 إلى 5 نجوم -->
-    <!-- ====================================== -->
-
-    <section
-      id="positiveFeedback"
-      class="feedback"
-    >
-
-      <p class="message google-message">
-  <span>يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في</span>
-  <span class="google-word" dir="ltr"> Google </span>
-  <span>⭐</span>
-      </p>
-
-      <!-- النص الذي طلبته بالضبط -->
-
-      <button
-        id="googleBtn"
-        class="google-btn"
-      >
-        ⭐قيمنا على Google
-      </button>
-
-
-      <div
-        id="positiveStatus"
-        class="status"
-      ></div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ============================= -->
-  <!-- JavaScript -->
-  <!-- ============================= -->
-
-  <script>
-
-    /*
-    ==========================================================
-    لا تعدل هذه الروابط الآن.
-    سنربط Google Sheets ورابط Google لاحقًا.
-    ==========================================================
-    */
-
-    const GOOGLE_SHEETS_ENDPOINT =
-      "https://script.google.com/macros/s/AKfycbxm1m2QRjR9l8RRTkk8wdSAm43c0FhcAxx_TipGDMM_Wp_1-2K9q90ZtWMwEJkrPpVX/exec";
-    const GOOGLE_REVIEW_URLS = {
-  almughrizat: "https://maps.app.goo.gl/5z4T9W9VDjqMA1EPA?g_st=ac",
-  althumamah: "https://maps.app.goo.gl/uSNfXh5opFWWRstp8?g_st=ac"
-};
-
-const BRANCH_ID = new URLSearchParams(window.location.search).get("branch") || "almughrizat";
-
-const BRANCH_NAMES = {
-  almughrizat: "المغرزات",
-  althumamah: "الثمامة",
-  alkhuzama: "الخزامى",
-  alsafa: "الصفا",
-  alrayan: "الريان",
-  alsuwaidi: "السويدي",
-  alshifa: "الشفاء",
-  alnaseem: "النسيم",
-  alarid: "العارض",
-  alfayha: "الفيحاء - المجمعة",
-  alquds: "القدس",
-  alqirawan: "القيروان",
-  almalqa: "الملقا",
-  alnarjis: "النرجس",
-  alnazim: "النظيم",
-  alnahdah: "النهضة",
-  ghirnatah: "غرناطة",
-  aisha: "عائشة",
-  irqa: "عرقة",
-  qurtubah: "قرطبة",
-  laban: "لبن"
-};
-
-const BRANCH_NAME = BRANCH_NAMES[BRANCH_ID] || "غير محدد";
-    
-    let selectedRating = 0;
-    let selectedCategory = "";
-
-
-    const stars =
-      document.querySelectorAll(".star");
-
-    const cardLogo =
-      document.getElementById("cardLogo");
-
-    const emoji =
-      document.getElementById("emoji");
-
-    const negativeFeedback =
-      document.getElementById("negativeFeedback");
-
-    const positiveFeedback =
-      document.getElementById("positiveFeedback");
-
-    const categories =
-      document.querySelectorAll(".category");
-
-    const submitBtn =
-      document.getElementById("submitBtn");
-
-    const googleBtn =
-      document.getElementById("googleBtn");
-
-    const negativeStatus =
-      document.getElementById("negativeStatus");
-
-    const positiveStatus =
-      document.getElementById("positiveStatus");
-
-
-    /* ==========================================
-       تلوين النجوم
-    ========================================== */
-
-    function updateStars(rating) {
-
-      stars.forEach(function(star) {
-
-        const starRating =
-          Number(star.dataset.rating);
-
-        star.classList.toggle(
-          "active",
-          starRating <= rating
-        );
-
-      });
-
-    }
-
-
-    /* ==========================================
-       تغيير الشعار إلى الإيموجي
-    ========================================== */
-
-    function showEmoji(type) {
-
-      /*
-        نخفي شعار التقييم داخل الكرت فقط.
-        الشعار العلوي يبقى موجودًا.
-      */
-
-      cardLogo.style.display = "none";
-
-      emoji.classList.remove("show");
-
-      /*
-        إعادة تشغيل الحركة
-      */
-
-      void emoji.offsetWidth;
-
-
-      if (type === "negative") {
-
-        emoji.textContent = "😔🙏";
-
-      } else {
-
-        emoji.textContent = "🥳";
-
-      }
-
-
-      emoji.classList.add("show");
-
-    }
-
-
-    /* ==========================================
-       إظهار الواجهة المناسبة
-    ========================================== */
-
-    function showRatingState(rating) {
-
-      negativeFeedback.classList.remove("show");
-
-      positiveFeedback.classList.remove("show");
-
-
-      negativeStatus.classList.remove("show");
-
-      positiveStatus.classList.remove("show");
-
-
-      /*
-        1 - 3 نجوم
-      */
-
-      if (rating <= 3) {
-
-        showEmoji("negative");
-
-        negativeFeedback.classList.add("show");
-
-      }
-
-
-      /*
-        4 - 5 نجوم
-      */
-
-      else {
-
-        showEmoji("positive");
-
-        positiveFeedback.classList.add("show");
-
-      }
-
-    }
-
-
-    /* ==========================================
-       عند الضغط على نجمة
-    ========================================== */
-
-    stars.forEach(function(star) {
-
-      star.addEventListener("click", function() {
-
-        selectedRating =
-          Number(star.dataset.rating);
-
-
-        updateStars(selectedRating);
-
-
-        showRatingState(selectedRating);
-
-      });
-
-    });
-
-
-    /* ==========================================
-       اختيار نوع المشكلة
-    ========================================== */
-
-    categories.forEach(function(button) {
-
-      button.addEventListener("click", function() {
-
-        categories.forEach(function(item) {
-
-          item.classList.remove("selected");
-
-        });
-
-
-        button.classList.add("selected");
-
-
-        selectedCategory =
-          button.dataset.category;
-
-      });
-
-    });
-
-
-    /* ==========================================
-       إرسال البيانات إلى Google Sheets
-    ========================================== */
-
-    async function sendToGoogleSheets(extra = {}) {
-
-      /*
-        إذا لم يتم الربط بعد، لا نفعل شيئًا.
-      */
-
-      if (
-        !GOOGLE_SHEETS_ENDPOINT ||
-        GOOGLE_SHEETS_ENDPOINT.includes("ضع_رابط")
-      ) {
-
-        return false;
-
-      }
-
-
-      const data = {
-        branch: BRANCH_NAME,
-
-        timestamp:
-          new Date().toISOString(),
-
-        rating:
-          selectedRating,
-
-        category:
-          selectedCategory,
-
-        note:
-          document
-            .getElementById("note")
-            .value
-            .trim(),
-
-        contact:
-          document
-            .getElementById("contact")
-            .value
-            .trim(),
-
-        ...extra
-
-      };
-
-
-      try {
-
-        await fetch(
-          GOOGLE_SHEETS_ENDPOINT,
-          {
-
-            method: "POST",
-
-            mode: "no-cors",
-
-            headers: {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
-
-            body:
-              JSON.stringify(data)
-
-          }
-        );
-
-
-        return true;
-
-      }
-
-      catch (error) {
-
-        console.error(error);
-
-        return false;
-
-      }
-
-    }
-
-
-    /* ==========================================
-       زر إرسال الملاحظة
-    ========================================== */
-
-    submitBtn.addEventListener(
-      "click",
-      async function() {
-
-        if (!selectedCategory) {
-
-          negativeStatus.textContent =
-            "اختر نوع المشكلة أولاً 🙏";
-
-          negativeStatus.classList.add("show");
-
-          return;
-
-        }
-
-
-        submitBtn.disabled = true;
-
-        submitBtn.textContent =
-          "جاري الإرسال...";
-
-
-        const sent =
-          await sendToGoogleSheets();
-
-
-        if (sent) {
-
-          negativeStatus.textContent =
-            "تم استلام ملاحظتك، شكرًا لك 🤍";
-
-        }
-
-        else {
-
-          negativeStatus.textContent =
-            "تم تسجيل ملاحظتك. سيتم تفعيل الحفظ في Google Sheets بعد الربط.";
-
-        }
-
-
-        negativeStatus.classList.add("show");
-
-
-        submitBtn.textContent =
-          "تم الإرسال ✓";
-
-      }
-    );
-
-
-    /* ==========================================
-       زر Google
-    ========================================== */
-
-    googleBtn.addEventListener(
-      "click",
-      async function() {
-
-        googleBtn.disabled = true;
-
-
-        googleBtn.textContent =
-          "جاري فتح Google...";
-
-
-        /*
-          نحفظ تقييم 4 أو 5 إذا تم ربط Sheets
-        */
-
-        await sendToGoogleSheets({
-          action: "google_review"
-        });
-
-
-        /*
-          إذا وضعنا رابط Google لاحقًا
-        */
-
-        const reviewUrl = GOOGLE_REVIEW_URLS[BRANCH_ID];
-
-if (reviewUrl) {
-  window.location.href = reviewUrl;
-} else {
-  positiveStatus.textContent = "رابط التقييم غير متوفر لهذا الفرع.";
+<img class="top-logo" src="logo.png" alt="عنبه">
+<main class="card">
+<div class="brand-area">
+<img id="cardLogo" class="card-logo" src="logo.png" alt="عنبه">
+<div id="emoji" class="emoji" aria-hidden="true"></div>
+</div>
+
+<section id="branchScreen" class="branch-screen">
+<h1>اختر الفرع</h1>
+<p class="subtitle">أي فرع قمت بزيارته؟</p>
+<input id="branchSearch" class="branch-search" type="search" placeholder="ابحث عن الفرع..." autocomplete="off">
+<div id="branchList" class="branch-list"></div>
+<div id="noBranches" class="no-branches">لا توجد فروع مطابقة لبحثك</div>
+</section>
+
+<section id="ratingScreen" class="rating-screen">
+<div id="selectedBranchLabel" class="selected-branch"></div>
+<button id="changeBranch" class="change-branch">تغيير الفرع</button>
+<h1>كيف كانت تجربتك؟</h1>
+<p class="subtitle">رأيك يهمنا ويصنع الفرق</p>
+<div class="stars">
+<button class="star" data-rating="1" aria-label="نجمة واحدة">★</button>
+<button class="star" data-rating="2" aria-label="نجمتان">★</button>
+<button class="star" data-rating="3" aria-label="ثلاث نجوم">★</button>
+<button class="star" data-rating="4" aria-label="أربع نجوم">★</button>
+<button class="star" data-rating="5" aria-label="خمس نجوم">★</button>
+</div>
+
+<section id="negativeFeedback" class="feedback">
+<p class="message">نعتذر منك 🙏 ساعدنا لحل المشكلة</p>
+<div class="categories">
+<button class="category" data-category="الأكل">🍽️ الأكل</button>
+<button class="category" data-category="الخدمة">🙋‍♂️ الخدمة</button>
+<button class="category" data-category="السرعة">⏱️ السرعة</button>
+<button class="category" data-category="النظافة">✨ النظافة</button>
+<button class="category" data-category="أخرى">💬 أخرى</button>
+</div>
+<textarea id="note" placeholder="اكتب ملاحظتك (اختياري)"></textarea>
+<input id="contact" class="contact" type="text" placeholder="جوالك أو إيميلك لو تبغى نتواصل معك (اختياري)">
+<button id="submitBtn" class="submit-btn">إرسال ملاحظتك</button>
+<div id="negativeStatus" class="status"></div>
+<div class="small-note">ملاحظتك تساعدنا نحسن تجربتك 🤍</div>
+</section>
+
+<section id="positiveFeedback" class="feedback">
+<p class="message google-message"><span>يسعدنا إنك استمتعت! 🎉 شاركنا رأيك في</span> <span class="google-word" dir="ltr">Google</span> <span>⭐</span></p>
+<button id="googleBtn" class="google-btn">⭐ قيمنا على Google</button>
+<div id="positiveStatus" class="status"></div>
+</section>
+</section>
+</main>
+
+<script>
+const GOOGLE_SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxm1m2QRjR9l8RRTkk8wdSAm43c0FhcAxx_TipGDMM_Wp_1-2K9q90ZtWMwEJkrPpVX/exec";
+
+const BRANCHES = [
+ {id:"almughrizat",name:"المغرزات",googleUrl:"https://maps.app.goo.gl/5z4T9W9VDjqMA1EPA?g_st=ac"},
+ {id:"althumamah",name:"الثمامة",googleUrl:"https://maps.app.goo.gl/uSNfXh5opFWWRstp8?g_st=ac"},
+ {id:"alsafa",name:"الصفا",googleUrl:"https://maps.app.goo.gl/3tMVTEtGkmNHybpw5"},
+ {id:"alrayan",name:"الريان",googleUrl:"https://maps.app.goo.gl/C3pDUv39WiEyiEHBA"},
+ {id:"alsuwaidi",name:"السويدي",googleUrl:"https://maps.app.goo.gl/ZLj9X1omjuFAB2MD9"},
+ {id:"alshifa",name:"الشفاء",googleUrl:"https://maps.app.goo.gl/i2JPkBFirMCb6FMa8"},
+ {id:"alnaseem",name:"النسيم",googleUrl:"https://maps.app.goo.gl/CnaMRxx7XhPvrBUx8"},
+ {id:"alarid",name:"العارض",googleUrl:"https://maps.app.goo.gl/nnrXyrjJ8g6k8v847"},
+ {id:"alquds",name:"القدس",googleUrl:"https://maps.app.goo.gl/41ypzzX53x6PLWkz8"},
+ {id:"alqirawan",name:"القيروان",googleUrl:"https://maps.app.goo.gl/2fvNZb5Vf3mmJTYt6"},
+ {id:"almalqa",name:"الملقا",googleUrl:"https://maps.app.goo.gl/nMMRsbfMQZoxf53X9"},
+ {id:"alnarjis",name:"النرجس",googleUrl:"https://maps.app.goo.gl/ytUh8HF9vGeU2vHG6"},
+ {id:"alnazim",name:"النظيم",googleUrl:"https://maps.app.goo.gl/yqKCwsFzgTsdUWGw7"},
+ {id:"alnahdah",name:"النهضة",googleUrl:"https://maps.app.goo.gl/hGDCiiPa2L5Do5Yw8"},
+ {id:"ghirnatah",name:"غرناطة",googleUrl:"https://maps.app.goo.gl/RRZgYE27UonvRcoeA"},
+ {id:"aisha",name:"عائشة",googleUrl:"https://maps.app.goo.gl/b6znFuL32D6ghoHT6"},
+ {id:"irqa",name:"عرقة",googleUrl:"https://maps.app.goo.gl/UsDqr94fkBqd8P3u5"},
+ {id:"qurtubah",name:"قرطبة",googleUrl:"https://maps.app.goo.gl/9WidDd8hfLmnxH8N8"},
+ {id:"laban",name:"لبن",googleUrl:"https://maps.app.goo.gl/3osUHaS4gue8uLts8"}
+];
+
+let selectedBranch = null;
+let selectedRating = 0;
+let selectedCategory = "";
+
+const branchScreen=document.getElementById("branchScreen");
+const ratingScreen=document.getElementById("ratingScreen");
+const branchList=document.getElementById("branchList");
+const branchSearch=document.getElementById("branchSearch");
+const noBranches=document.getElementById("noBranches");
+const selectedBranchLabel=document.getElementById("selectedBranchLabel");
+const stars=document.querySelectorAll(".star");
+const cardLogo=document.getElementById("cardLogo");
+const emoji=document.getElementById("emoji");
+const negativeFeedback=document.getElementById("negativeFeedback");
+const positiveFeedback=document.getElementById("positiveFeedback");
+const categories=document.querySelectorAll(".category");
+const submitBtn=document.getElementById("submitBtn");
+const googleBtn=document.getElementById("googleBtn");
+const negativeStatus=document.getElementById("negativeStatus");
+const positiveStatus=document.getElementById("positiveStatus");
+
+function renderBranches(filter=""){
+ const filtered=BRANCHES.filter(b=>b.name.includes(filter.trim()));
+ branchList.innerHTML="";
+ filtered.forEach(branch=>{
+  const button=document.createElement("button");
+  button.className="branch-option";
+  button.type="button";
+  button.textContent=branch.name;
+  button.addEventListener("click",()=>selectBranch(branch));
+  branchList.appendChild(button);
+ });
+ noBranches.style.display=filtered.length?"none":"block";
+}
+branchSearch.addEventListener("input",()=>renderBranches(branchSearch.value));
+
+function selectBranch(branch){
+ selectedBranch=branch;
+ selectedBranchLabel.textContent="الفرع المختار: "+branch.name;
+ branchScreen.style.display="none";
+ ratingScreen.style.display="block";
+ resetRating();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("changeBranch").addEventListener("click",()=>{
+ ratingScreen.style.display="none";
+ branchScreen.style.display="block";
+ branchSearch.value="";
+ renderBranches();
+ resetRating();
+});
+
+function resetRating(){
+ selectedRating=0;
+ selectedCategory="";
+ updateStars(0);
+ negativeFeedback.classList.remove("show");
+ positiveFeedback.classList.remove("show");
+ negativeStatus.classList.remove("show");
+ positiveStatus.classList.remove("show");
+ categories.forEach(c=>c.classList.remove("selected"));
+ document.getElementById("note").value="";
+ document.getElementById("contact").value="";
+ cardLogo.style.display="block";
+ emoji.classList.remove("show");
+ submitBtn.disabled=false;
+ submitBtn.textContent="إرسال ملاحظتك";
+ googleBtn.disabled=false;
+ googleBtn.textContent="⭐ قيمنا على Google";
 }
 
+function updateStars(rating){
+ stars.forEach(star=>star.classList.toggle("active",Number(star.dataset.rating)<=rating));
+}
+function showEmoji(type){
+ cardLogo.style.display="none";
+ emoji.classList.remove("show");
+ void emoji.offsetWidth;
+ emoji.textContent=type==="negative"?"😔🙏":"🥳";
+ emoji.classList.add("show");
+}
+function showRatingState(rating){
+ negativeFeedback.classList.remove("show");
+ positiveFeedback.classList.remove("show");
+ negativeStatus.classList.remove("show");
+ positiveStatus.classList.remove("show");
+ if(rating<=3){showEmoji("negative");negativeFeedback.classList.add("show");}
+ else{showEmoji("positive");positiveFeedback.classList.add("show");}
+}
+stars.forEach(star=>star.addEventListener("click",()=>{
+ selectedRating=Number(star.dataset.rating);
+ updateStars(selectedRating);
+ showRatingState(selectedRating);
+}));
+categories.forEach(button=>button.addEventListener("click",()=>{
+ categories.forEach(item=>item.classList.remove("selected"));
+ button.classList.add("selected");
+ selectedCategory=button.dataset.category;
+}));
 
-        /*
-          إذا لم نضع الرابط بعد
-        */
+async function sendToGoogleSheets(extra={}){
+ if(!GOOGLE_SHEETS_ENDPOINT)return false;
+ const data={
+  branch:selectedBranch?.name||"غير محدد",
+  branchId:selectedBranch?.id||"",
+  timestamp:new Date().toISOString(),
+  rating:selectedRating,
+  category:selectedCategory,
+  note:document.getElementById("note").value.trim(),
+  contact:document.getElementById("contact").value.trim(),
+  ...extra
+ };
+ try{
+  await fetch(GOOGLE_SHEETS_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+  return true;
+ }catch(error){console.error(error);return false;}
+}
 
-        else {
+submitBtn.addEventListener("click",async()=>{
+ if(!selectedCategory){
+  negativeStatus.textContent="اختر نوع المشكلة أولاً 🙏";
+  negativeStatus.classList.add("show");
+  return;
+ }
+ submitBtn.disabled=true;
+ submitBtn.textContent="جاري الإرسال...";
+ await sendToGoogleSheets();
+ negativeStatus.textContent="تم استلام ملاحظتك، شكرًا لك 🤍";
+ negativeStatus.classList.add("show");
+ submitBtn.textContent="تم الإرسال ✓";
+});
 
-          positiveStatus.textContent =
-            "أضف رابط تقييم Google لاحقًا.";
+googleBtn.addEventListener("click",async()=>{
+ if(!selectedBranch?.googleUrl){
+  positiveStatus.textContent="رابط تقييم Google غير متوفر لهذا الفرع.";
+  positiveStatus.classList.add("show");
+  return;
+ }
+ googleBtn.disabled=true;
+ googleBtn.textContent="جاري فتح Google...";
+ await sendToGoogleSheets({action:"google_review"});
+ window.location.href=selectedBranch.googleUrl;
+});
 
-          positiveStatus.classList.add("show");
-
-
-          googleBtn.disabled = false;
-
-
-          googleBtn.textContent =
-            "⭐قيمنا على Google";
-
-        }
-
-      }
-    );
-
-  </script>
-
+renderBranches();
+</script>
 </body>
 </html>
